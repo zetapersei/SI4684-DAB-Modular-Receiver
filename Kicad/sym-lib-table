@@ -1,0 +1,5 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "SI4684")(type "KiCad")(uri "${KIPRJMOD}/SI4684.kicad_sym")(options "")(descr ""))
+  (lib (name "rf_conn")(type "KiCad")(uri "C:/Users/mauri/Documenti_locali/Kicad_Library/JLCPCB/Librerie/RF_Connector/kh-sma-k513-g.kicad_sym")(options "")(descr ""))
+)
