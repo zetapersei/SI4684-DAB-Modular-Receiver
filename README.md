@@ -30,14 +30,8 @@ The firmware in `src/` is organized around the same functional boundaries:
 - `slideshow.*` and `JPEGdecoder.*`: slideshow rendering.
 - `IRReceiver.*` and `TPA6130A2.*`: remote input and headphone amplifier.
 
-# Building instructions
-On Youtube I published a video how to build your own radio.
 
-In English:
-https://www.youtube.com/watch?v=C_xd0h_HTuU
 
-In Dutch:
-https://www.youtube.com/watch?v=wV3G2J327qg
 
 # Libraries
 These are the libraries used for this project:
