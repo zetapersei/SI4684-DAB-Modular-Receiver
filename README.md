@@ -8,6 +8,28 @@ The version in the repository is an ongoing development. It could and will conta
 Advanced DAB Tuner software for Skyworks SI4684 tuner with ESP32 board and a color LCD\
 More information: https://www.pe5pvb.nl/
 
+## Fork updates
+
+### Modular receiver PCB
+This fork adds a KiCad redesign for the **DAB+ receiver module A**. The board keeps the SI4684 tuner, 19.2 MHz reference, RF matching network, SMA antenna connector, and 1.8 V / 3.3 V regulation together as a dedicated receiver module. Its separate headers expose power, SPI, digital audio/control, and analog audio connections so the tuner can be integrated with the controller, display, and audio sections as distinct modules.
+
+The KiCad source and reference outputs are in [`Kicad/`](Kicad/):
+- `Dab+.kicad_sch` and `Dab+.kicad_pcb`: schematic and two-layer PCB.
+- `schematic.pdf` and `layout.pdf`: exported design drawings.
+- `Dab_bom.xlsx` and `BOM/`: bill of materials and component references.
+
+Check the schematic for the exact connector pinout before wiring the modules: J1–J6 serve different signal groups, including the power rails (J3) and stereo analog output (J4). Do not assume the headers are interchangeable.
+
+The checked-in `Dab+.csv` does not match this PCB revision (including connector and U3 details). Regenerate it from the current schematic and verify the U3 supplier part number before ordering components.
+
+### Firmware modules
+The firmware in `src/` is organized around the same functional boundaries:
+- `si4684.*`: tuner control, DAB service data, and MOT slideshow reception.
+- `comms.*`: serial command and status protocol.
+- `gui.*`, `graphics.h`, `font.h`, and `language.h`: display, graphics, fonts, and localization.
+- `slideshow.*` and `JPEGdecoder.*`: slideshow rendering.
+- `IRReceiver.*` and `TPA6130A2.*`: remote input and headphone amplifier.
+
 # Building instructions
 On Youtube I published a video how to build your own radio.
 

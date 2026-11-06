@@ -4,7 +4,7 @@
 // as "$L=...", "$I=...", "$S=..." lines while connectedSerial is true.
 //
 // Communication() is called once per loop iteration; it parses any inbound
-// line (non-blocking, 100 ms readUntil timeout) and pushes status diffs out.
+// line (bounded by a 100 ms readUntil timeout) and pushes status diffs out.
 
 #ifndef COMMS_H
 #define COMMS_H

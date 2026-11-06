@@ -24,8 +24,8 @@ String ServiceInfoOld;
 String ServiceDataOld;
 bool connectedSerial;                // protocol active only after ENABLE=1 handshake
 
-// Called once per main loop. Parses at most one inbound line (non-blocking)
-// and then emits diffs of cached state to the host if connected.
+// Called once per main loop. Reads at most one inbound line (with a bounded
+// timeout) and then emits diffs of cached state to the host if connected.
 void Communication(void) {
   if (Serial.available() > 0) {
     Serial.setTimeout(100);  // partial packet shouldn't freeze the loop for 1s
@@ -77,50 +77,50 @@ void Communication(void) {
                 DataPrint("#1\n");
               }
               break;
-
-            case 'T':
-              if (command.equals("TUNE")) {
-                if (intValue < sizeof(DABfrequencyTable_DAB) / sizeof(DABfrequencyTable_DAB[0])) {
-                  radio.ServiceStart = false;
-                  radio.ServiceIndex = 0;
-                  radio.clearData();
-                  for (byte x = 0; x < 17; x++) _serviceName[x] = '\0';
-                  dabfreq = intValue;
-                  radio.setFreq(dabfreq);
-                  if (SlideShowView || ChannelListView || ShowServiceInformation || menu) {
-                    SlideShowView = false;
-                    ChannelListView = false;
-                    ShowServiceInformation = false;
-                    menu = false;
-                    BuildDisplay();
-                  } else {
-                    ShowFreq();
-                  }
-                  DataPrint("#0\n*TUNE=" + String(dabfreq) + "\n");
-                  DataPrint("$M=SLIDESHOW=0\n");
-                } else {
-                  DataPrint("#1\n");
-                }
-              }
-              break;
-            case 'S':
-              if (command.equals("SERVICE")) {
-                if (intValue < radio.numberofservices) {
-                  radio.ServiceIndex = intValue;
-                  radio.setService(radio.ServiceIndex);
-                  radio.ServiceStart = true;
-                  store = true;
-                  DataPrint("#0\n*SERVICE=" + String(radio.ServiceIndex) + "\n");
-                  DataPrint("$M=SLIDESHOW=0\n");
-                } else {
-                  DataPrint("#1\n");
-                }
-              }
-              break;
-            default:
-              DataPrint("#2\n");
-              break;
             }
+
+          case 'T':
+            if (command.equals("TUNE")) {
+              if (intValue < sizeof(DABfrequencyTable_DAB) / sizeof(DABfrequencyTable_DAB[0])) {
+                radio.ServiceStart = false;
+                radio.ServiceIndex = 0;
+                radio.clearData();
+                for (byte x = 0; x < 17; x++) _serviceName[x] = '\0';
+                dabfreq = intValue;
+                radio.setFreq(dabfreq);
+                if (SlideShowView || ChannelListView || ShowServiceInformation || menu) {
+                  SlideShowView = false;
+                  ChannelListView = false;
+                  ShowServiceInformation = false;
+                  menu = false;
+                  BuildDisplay();
+                } else {
+                  ShowFreq();
+                }
+                DataPrint("#0\n*TUNE=" + String(dabfreq) + "\n");
+                DataPrint("$M=SLIDESHOW=0\n");
+              } else {
+                DataPrint("#1\n");
+              }
+            }
+            break;
+          case 'S':
+            if (command.equals("SERVICE")) {
+              if (intValue < radio.numberofservices) {
+                radio.ServiceIndex = intValue;
+                radio.setService(radio.ServiceIndex);
+                radio.ServiceStart = true;
+                store = true;
+                DataPrint("#0\n*SERVICE=" + String(radio.ServiceIndex) + "\n");
+                DataPrint("$M=SLIDESHOW=0\n");
+              } else {
+                DataPrint("#1\n");
+              }
+            }
+            break;
+          default:
+            DataPrint("#2\n");
+            break;
         }
       } else {
         if (command == "ENABLE") {
