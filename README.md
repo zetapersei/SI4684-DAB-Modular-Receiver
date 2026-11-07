@@ -13,7 +13,7 @@ More information: https://www.pe5pvb.nl/
 ### Modular receiver PCB
 This fork adds a KiCad redesign for the **DAB+ receiver module A**. The board keeps the SI4684 tuner, 19.2 MHz reference, RF matching network, SMA antenna connector, and 1.8 V / 3.3 V regulation together as a dedicated receiver module. Its separate headers expose power, SPI, digital audio/control, and analog audio connections so the tuner can be integrated with the controller, display, and audio sections as distinct modules.
 
-The KiCad source and reference outputs are in [`Kicad/`](Kicad/):
+The KiCad source and reference outputs are in [`DAB_Module-Kicad/`](DAB_Module-Kicad/):
 - `Dab+.kicad_sch` and `Dab+.kicad_pcb`: schematic and two-layer PCB.
 - `schematic.pdf` and `layout.pdf`: exported design drawings.
 - `Dab_bom.xlsx` and `BOM/`: bill of materials and component references.
@@ -21,6 +21,14 @@ The KiCad source and reference outputs are in [`Kicad/`](Kicad/):
 Check the schematic for the exact connector pinout before wiring the modules: J1–J6 serve different signal groups, including the power rails (J3) and stereo analog output (J4). Do not assume the headers are interchangeable.
 
 The checked-in `Dab+.csv` does not match this PCB revision (including connector and U3 details). Regenerate it from the current schematic and verify the U3 supplier part number before ordering components.
+
+### Controller PCB
+The controller board design is in [`Controller-Kicad/`](Controller-Kicad/). It brings together the DOIT ESP32 DevKit, TFT display, rotary encoders, and control buttons, with a `Mainboard` connector for the receiver module.
+
+- `SI4684 controller SMD.kicad_sch`, `SI4684 controller SMD.kicad_pcb`, and `SI4684 controller SMD.kicad_pro`: schematic, PCB, and KiCad project.
+- `Library.pretty/`: custom footprints for the ESP32 DevKit and TFT display, referenced by the project footprint library table.
+
+Open the `.kicad_pro` project in KiCad to use its project-specific footprint configuration. Check the schematic for the `Mainboard` connector pinout before connecting it to the receiver module.
 
 ### Firmware modules
 The firmware in `src/` is organized around the same functional boundaries:
